@@ -1,13 +1,15 @@
 package com.duobei.forester.config;
 
-import org.sitemesh.config.ConfigurableSiteMeshFilter;
-import org.sitemesh.webapp.SiteMeshFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.descriptor.JspConfigDescriptor;
+import javax.servlet.descriptor.JspPropertyGroupDescriptor;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Created by excalibur on 2014/6/23.
@@ -36,8 +38,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         characterEncodingFilter.setEncoding("UTF-8");
 
 
-        return new Filter[]{ characterEncodingFilter };
+        return new Filter[]{characterEncodingFilter};
     }
-
 
 }

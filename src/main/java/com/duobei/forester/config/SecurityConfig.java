@@ -50,9 +50,9 @@ public class SecurityConfig {
     public ShiroFilterFactoryBean shiroFilter() {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(webSecurityManager());
-        shiroFilter.setLoginUrl();
-        shiroFilter.setUnauthorizedUrl();
-        shiroFilter.setFilterChainDefinitionMap();
+//        shiroFilter.setLoginUrl();
+//        shiroFilter.setUnauthorizedUrl();
+//        shiroFilter.setFilterChainDefinitionMap();
 
         return shiroFilter;
     }
