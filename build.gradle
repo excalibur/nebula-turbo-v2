@@ -1,0 +1,124 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+apply plugin: 'java'
+apply plugin: "war"
+
+
+configurations {
+    all*.exclude group: "commons-logging"
+    all*.exclude module: "slf4j-log4j12"
+}
+
+
+ // 项目构建JDK版本
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+
+
+ // 编译参数
+[compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:none", "-g"]
+[compileJava, javadoc, compileTestJava]*.options*.encoding = 'UTF-8'
+
+// 仓库
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+ 	// Spring
+    compile "org.springframework:spring-aop:$springVersion",
+    	"org.springframework:spring-core:$springVersion",
+    	"org.springframework:spring-beans:$springVersion",
+    	"org.springframework:spring-context:$springVersion"
+
+    // Logging
+    compile "org.slf4j:slf4j-api:$slf4jVersion",
+        "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+
+    compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
+    runtime "org.apache.logging.log4j:log4j-core:$log4jVersion"
+
+    // mysql
+	compile	"mysql:mysql-connector-java:$mysqlVersion"
+
+
+    // spring orm
+    compile "org.springframework:spring-jdbc:$springVersion"
+
+    // spring mvc
+    compile "org.springframework:spring-webmvc:$springVersion"
+    compile "org.springframework:spring-web:$springVersion"
+
+    // spring data
+    compile "org.springframework.data:spring-data-rest-webmvc:2.1.0.RELEASE",
+    "org.springframework.data:spring-data-jpa:$springDataJpaVersion",
+    "org.springframework.data:spring-data-commons:$springDataCommonsVersion"
+
+    // hibernate
+    compile "org.hibernate:hibernate-entitymanager:$hibernateVersion",
+    "org.jadira.usertype:usertype.core:$userTypeVersion"
+
+    // redis
+    compile "org.springframework.data:spring-data-redis:$springDataRedisVersion"
+
+	// library
+	compile "joda-time:joda-time:$jodaVersion",
+		"com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+            "org.apache.commons:commons-lang3:$commonsLang3Version",
+            "commons-collections:commons-collections:$commonsCollectionsVersion"
+
+    compile "javax.servlet:jstl:1.2"
+
+    // security
+    compile 'org.apache.shiro:shiro-core:1.2.3'
+    compile 'org.apache.shiro:shiro-web:1.2.3'
+    compile 'org.apache.shiro:shiro-spring:1.2.3'
+
+    providedCompile "org.projectlombok:lombok:1.12.4"
+
+	// 
+	providedCompile "javax.servlet:javax.servlet-api:3.0.1",
+                'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
+    // Testing
+    testCompile "junit:junit:$junitVersion",
+        "org.hamcrest:hamcrest-library:$hamcrestVersion",
+        "org.springframework:spring-test:$springVersion",
+        "org.hsqldb:hsqldb:$hsqldbVersion",
+        "com.jayway.jsonpath:json-path:$jsonpathVersion"
+}
+
+// ==================================
+task dev(dependsOn:["compileJava", "processResources"]) {
+    println 'package war in dev environment'
+}
+dev << {
+    copy {
+        from "$rootDir/src/config/dev"
+        into "$buildDir/resources/main/"
+        include "**/*"
+    }
+    println ':classes'
+    classes.execute();
+    println ':war'
+    war.execute();
+}
+// ==================================
+task product(dependsOn:["compileJava", "processResources"]) {
+    println 'package war in product environment'
+}
+product << {
+    copy {
+        from "$rootDir/src/config/product"
+        into "$buildDir/resources/main/"
+        include "**/*"
+    }
+    println ':classes'
+    classes.execute();
+    println ':war'
+    war.execute();
+}
+
+task wrapper(type:Wrapper){
+	gradleVersion= '1.11'
+}
