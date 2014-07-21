@@ -1,4 +1,6 @@
-# your-turn-api
+# 理网站研究
 
-your-turn-api 是一个基于Spring框架的尝试。
+基于Spring、Spring data、Apache Shiro。
+
+
 
