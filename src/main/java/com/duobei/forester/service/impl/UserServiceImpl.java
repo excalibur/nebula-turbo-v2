@@ -1,6 +1,7 @@
 package com.duobei.forester.service.impl;
 
 import com.duobei.forester.core.domain.User;
+import com.duobei.forester.core.exception.RegisterException;
 import com.duobei.forester.dao.UserRepository;
 import com.duobei.forester.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -37,13 +38,18 @@ public class UserServiceImpl implements UserService {
     private DefaultHashService defaultHashService;
 
     @Override
-    public void register(User user) {
+    public void register(User user)throws RegisterException {
         user.setRegisteTime(new DateTime());
 
-        if (StringUtils.isNotBlank(user.getPassword())) {
-            entryptPassword(user);
+        if (StringUtils.isBlank(user.getUsername())) {
+            throw new RegisterException("user username can't be or have blank!");
         }
 
+        if (StringUtils.isBlank(user.getPassword())) {
+            throw new RegisterException("user password can't be or have blank!");
+        }
+
+        entryptPassword(user);
         userRepository.save(user);
     }
 
@@ -52,8 +58,8 @@ public class UserServiceImpl implements UserService {
      */
     private void entryptPassword(User user) {
 
-        HashRequest request = new HashRequest.Builder().setSource(ByteSource.Util.bytes(user.getPassword().trim()))
-                .setSalt(ByteSource.Util.bytes(user.getUsername().trim())).setIterations(defaultHashService.getHashIterations()).build();
+        HashRequest request = new HashRequest.Builder().setSource(ByteSource.Util.bytes(user.getPassword()))
+                .setSalt(ByteSource.Util.bytes(user.getUsername())).setIterations(defaultHashService.getHashIterations()).build();
 
         String hex = defaultHashService.computeHash(request).toHex();
         user.setPassword(hex);

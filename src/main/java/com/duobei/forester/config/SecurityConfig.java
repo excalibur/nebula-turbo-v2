@@ -94,7 +94,7 @@ public class SecurityConfig {
         filterChainDefinitionMap.put(assetsUrl, "anon");
         filterChainDefinitionMap.put(logoutUrl, "logout");
 
-        filterChainDefinitionMap.put("/**", "authc,user");
+        filterChainDefinitionMap.put("/**", "user");
 
         shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
