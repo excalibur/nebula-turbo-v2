@@ -1,9 +1,6 @@
 package com.duobei.forester.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,12 +10,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
  */
 @Configuration
 @PropertySource(value = "classpath:app.properties")
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan(basePackages = "com.duobei.forester", excludeFilters = {
         @ComponentScan.Filter(Controller.class),
-        @ComponentScan.Filter(ControllerAdvice.class),
-        @ComponentScan.Filter(Configuration.class)})
+        @ComponentScan.Filter(ControllerAdvice.class)
+})
 public class ApplicationConfig {
-
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {

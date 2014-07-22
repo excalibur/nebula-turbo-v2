@@ -1,6 +1,6 @@
-import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: 'java'
 apply plugin: "war"
+apply plugin: "jetty"
 
 
 configurations {
@@ -68,7 +68,11 @@ dependencies {
             "org.apache.commons:commons-lang3:$commonsLang3Version",
             "commons-collections:commons-collections:$commonsCollectionsVersion"
 
-    compile "javax.servlet:jstl:1.2"
+    compile "org.aspectj:aspectjrt:1.7.4",
+            "org.aspectj:aspectjweaver:1.7.4"
+
+    compile "javax.servlet:jstl:1.2",
+            "org.sitemesh:sitemesh:3.0.0"
 
     // security
     compile 'org.apache.shiro:shiro-core:1.2.3'

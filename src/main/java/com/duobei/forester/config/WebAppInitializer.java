@@ -1,24 +1,22 @@
 package com.duobei.forester.config;
 
+import org.sitemesh.config.ConfigurableSiteMeshFilter;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.descriptor.JspConfigDescriptor;
-import javax.servlet.descriptor.JspPropertyGroupDescriptor;
-import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * Created by excalibur on 2014/6/23.
  */
+@Order(1)
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{ApplicationConfig.class, DataSourceConfig.class};
+        return new Class<?>[]{ApplicationConfig.class, DataSourceConfig.class, SecurityConfig.class};
     }
 
     @Override
@@ -36,9 +34,15 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
 
+        ConfigurableSiteMeshFilter siteMeshFilter = new ConfigurableSiteMeshFilter();
 
-        return new Filter[]{characterEncodingFilter};
+        DelegatingFilterProxy shiroFilter = new DelegatingFilterProxy();
+        shiroFilter.setTargetFilterLifecycle(true);
+        shiroFilter.setTargetBeanName("shiroFilter");
+
+        return new Filter[]{characterEncodingFilter, shiroFilter, siteMeshFilter};
     }
 
 }

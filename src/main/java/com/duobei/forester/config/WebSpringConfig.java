@@ -1,5 +1,7 @@
 package com.duobei.forester.config;
 
+import org.sitemesh.builder.SiteMeshFilterBuilder;
+import org.sitemesh.config.ConfigurableSiteMeshFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,12 +13,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
-import org.springframework.web.servlet.view.tiles3.TilesView;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * spring mvc 的javaconfig配置
@@ -49,5 +45,19 @@ public class WebSpringConfig extends WebMvcConfigurerAdapter {
 
         return viewResolver;
     }
+
+
+    /**
+     * sitemesh 3
+     */
+    public static class CustomSiteMeshFilter extends ConfigurableSiteMeshFilter {
+        @Override
+        protected void applyCustomConfiguration(SiteMeshFilterBuilder builder) {
+            builder.addDecoratorPath("/*", "/WEB-INF/layouts/default.jsp")
+                    .addExcludedPath("/login");
+        }
+    }
+
+
 
 }
