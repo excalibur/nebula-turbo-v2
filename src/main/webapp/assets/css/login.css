@@ -14,14 +14,14 @@ body.login {
     border: 5px solid #ddd;
     background-color: #fff
 }
-#login-btn-facebook, #login-btn-twitter {
+#login-btn-qq, #login-btn-weibo {
     width: 130px;
     padding: 6px 0
 }
-#login-btn-facebook {
+#login-btn-qq {
     margin: 0 6px 5px 0
 }
-#login-btn-twitter {
+#login-btn-weibo {
     margin: 0 0 5px
 }
 #login-btn-email {
@@ -32,10 +32,8 @@ body.login {
 #login-form {
     margin: 0;
     padding-top: 10px;
-    display: none
+    display: block;
 }
-body {
-    background-color: #f9f9f9;
-    color: #333;
-    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif
+.bootstrap-switch .bootstrap-switch-label {
+    background: #e6e6e6;
 }
