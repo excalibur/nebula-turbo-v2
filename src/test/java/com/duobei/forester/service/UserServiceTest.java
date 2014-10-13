@@ -37,8 +37,9 @@ public class UserServiceTest extends ShiroTest{
 
     @Test
     public void testPassword() throws Exception {
-        HashRequest request = new HashRequest.Builder().setSource(ByteSource.Util.bytes("hello"))
-                .setSalt(ByteSource.Util.bytes("jiangzuotong")).setIterations(defaultHashService.getHashIterations()).build();
+        HashRequest request = new HashRequest.Builder().setSource(ByteSource.Util.bytes("123456"))
+                .setSalt(ByteSource.Util.bytes("faith2"))
+                .setIterations(defaultHashService.getHashIterations()).setAlgorithmName(defaultHashService.getHashAlgorithmName()).build();
 
         String hex = defaultHashService.computeHash(request).toHex();
         System.out.println(hex);
@@ -47,11 +48,11 @@ public class UserServiceTest extends ShiroTest{
         matcher.setHashIterations(defaultHashService.getHashIterations());
 
         UsernamePasswordToken token = new UsernamePasswordToken();
-        token.setUsername("faith");
-        token.setPassword(new char[]{'h', 'e', 'l', 'l', 'o'});
+        token.setUsername("faith2");
+        token.setPassword(new char[]{'1', '2', '3', '4', '5', '6'});
 
-        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo("faith", hex
-                , ByteSource.Util.bytes(SecurityConfig.PrivateSaltString + "jiangzuotong")
+        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo("faith2", hex
+                , ByteSource.Util.bytes(SecurityConfig.PrivateSaltString + "faith2")
                 , "sdasdasd");
 
         System.out.println(matcher.doCredentialsMatch(token, simpleAuthenticationInfo));

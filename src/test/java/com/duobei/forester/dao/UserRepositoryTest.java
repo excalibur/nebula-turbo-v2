@@ -21,6 +21,6 @@ public class UserRepositoryTest extends SpringTest {
     @Test
     public void test01() throws Exception {
 
-        userRepository.findOne(1L);
+        // userRepository.findOne(1L);
     }
 }

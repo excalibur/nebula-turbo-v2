@@ -1,7 +1,4 @@
-apply plugin: 'java'
 apply plugin: "war"
-apply plugin: "jetty"
-
 
 configurations {
     all*.exclude group: "commons-logging"
@@ -93,34 +90,20 @@ dependencies {
 }
 
 // ==================================
-task dev(dependsOn:["compileJava", "processResources"]) {
-    println 'package war in dev environment'
-}
-dev << {
-    copy {
-        from "$rootDir/src/config/dev"
-        into "$buildDir/resources/main/"
-        include "**/*"
+file("$rootDir/config").listFiles().each { File f ->
+    task ("${f.name}", dependsOn:["compileJava", "processResources", "classes"]){
+        description = "package war in ${f.name} environment"
+        doLast {
+            println ':copy'
+            copy{
+                from "${f}"
+                into "$buildDir/resources/main"
+                include "**/*"
+            }
+            println ':war'
+            war.execute();
+        }
     }
-    println ':classes'
-    classes.execute();
-    println ':war'
-    war.execute();
-}
-// ==================================
-task product(dependsOn:["compileJava", "processResources"]) {
-    println 'package war in product environment'
-}
-product << {
-    copy {
-        from "$rootDir/src/config/product"
-        into "$buildDir/resources/main/"
-        include "**/*"
-    }
-    println ':classes'
-    classes.execute();
-    println ':war'
-    war.execute();
 }
 
 task wrapper(type:Wrapper){
